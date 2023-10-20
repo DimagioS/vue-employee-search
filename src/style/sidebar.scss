@@ -1,0 +1,69 @@
+.sidebar {
+  width: 300px;
+  border-right: 1px solid #dee1ea;
+  padding: 30px;
+
+  h2, .result-header {
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    padding-bottom: 22px;
+  }
+
+  input {
+    border-radius: 8px;
+    border: 1.5px solid #E9ECEF;
+    background: #FFF;
+    padding: 16px;
+    min-width: 240px;
+    margin-bottom: 22px;
+    outline: none;
+  }
+
+  .result-header {
+    padding-bottom: 18px;
+  }
+
+  .result p {
+    color: #76787D;
+    font-size: 14px;
+  }
+}
+
+.card {
+  cursor: pointer;
+  display: flex;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.10);
+
+  .img {
+    border-radius: 10px 0 0 10px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.card:not(:last-child) {
+  margin-bottom: 18px;
+}
+
+.card-info {
+  padding: 15px;
+  border-left: 1px solid #E9ECEF;
+  transition: opacity 0.3s;
+
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.card.active {
+  background: #E0E0E0;
+}

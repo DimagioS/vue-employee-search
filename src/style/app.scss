@@ -1,41 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:ital,wght@0,300;0,600;0,700;0,800;0,900;1,700&display=swap');
-
-*,
-::after,
-::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Monderrat, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-a:focus, a:active {
-  outline: none;
-}
-
-button {
-  cursor: pointer;
-}
-  
-a,a:visited {
-  text-decoration: none;
-}
- 
-a:hover {
-  text-decoration: none;
-}
-  
-ul li {
-  list-style: none;
-}
-  
-img {
-  vertical-align: top;
-}
+@import './index.scss';
 
 .app {
   padding: 50px;
+}
+
+.main {
+  display: flex;
+  border-radius: 10px;
+  background: #FDFDFD;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.10);
+  width: 100%;
+  min-height: 70vh;
 }
