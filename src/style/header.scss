@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  cursor: pointer;
+  color: #E31F24;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.user {
+  cursor: pointer;
+  color: #333;
+  font-size: 16px;
+}
