@@ -2,28 +2,19 @@
   <div class="sidebar">
     <h2>Поиск сотрудников</h2>
 
-    <input placeholder="Введите Id или имя">
+    <input :value="searchQuery" @input="updateSearchQuery" placeholder="Введите Id или имя">
 
     <p class="result-header">Результаты</p>
     <div class="result">
-      <!-- <p>начните поиск </p> -->
+      <p v-if="users.length === 0">Начните поиск</p>
       <div class="cards">
-        <div class="card">
+        <div class="card" v-for="user in users" :key="user?.id">
           <div class="img">
-            <img src="../assets/415x415_1369476198592009862_1369477640844005775.jpg" alt="">
+            <img src="../assets/profile-photo.png" alt="">
           </div>
           <div class="card-info">
-            <p class="name">Bret</p>
-            <p class="email">Sincere@april.biz</p>
-          </div>
-        </div>
-        <div class="card active">
-          <div class="img">
-            <img src="../assets/415x415_1369476198592009862_1369477640844005775.jpg" alt="">
-          </div>
-          <div class="card-info">
-            <p class="name">Bret</p>
-            <p class="email">Sincere@april.biz</p>
+            <p class="name">{{ user?.username }}</p>
+            <p class="email">{{ user?.email }}</p>
           </div>
         </div>
       </div>
@@ -32,8 +23,30 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+import { debounce } from 'lodash';
+
   export default {
-    name: 'Sidebar'
+    name: 'Sidebar',
+
+    data() {
+      return {
+        debouncedFetchUsers: debounce(this.fetchUsers, 500),
+      }
+    },
+
+    computed: {
+      ...mapState(['searchQuery', 'users'])
+    },
+    
+    methods: {
+      ...mapActions(['setSearchQuery', 'fetchUsers']),
+      updateSearchQuery(event) {
+        this.setSearchQuery(event.target.value);
+
+        this.debouncedFetchUsers();
+      }
+    }
   }
 </script>
 
