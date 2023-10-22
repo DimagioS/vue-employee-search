@@ -2,7 +2,7 @@
   <div class="sidebar">
     <h2>Поиск сотрудников</h2>
 
-    <input :value="searchQuery" @input="updateSearchQuery" placeholder="Введите Id или имя">
+    <input :value="searchQuery" @input="updateSearchQuery" placeholder="Введите Id или фамилию">
 
     <p class="result-header">Результаты</p>
     <div class="result">
@@ -26,28 +26,28 @@
 import { mapActions, mapState } from 'vuex';
 import { debounce } from 'lodash';
 
-  export default {
-    name: 'Sidebar',
+export default {
+  name: 'Sidebar',
 
-    data() {
-      return {
-        debouncedFetchUsers: debounce(this.fetchUsers, 500),
-      }
-    },
-
-    computed: {
-      ...mapState(['searchQuery', 'users'])
-    },
-    
-    methods: {
-      ...mapActions(['setSearchQuery', 'fetchUsers']),
-      updateSearchQuery(event) {
-        this.setSearchQuery(event.target.value);
-
-        this.debouncedFetchUsers();
-      }
+  data() {
+    return {
+      debouncedFetchUsers: debounce(this.fetchUsers, 500),
     }
-  }
+  },
+
+  computed: {
+    ...mapState(['searchQuery', 'users', 'isLoading', 'cachedUsers'])
+  },
+
+  methods: {
+    ...mapActions(['setSearchQuery', 'fetchUsers']),
+    updateSearchQuery(event) {
+      this.setSearchQuery(event.target.value);
+
+      this.debouncedFetchUsers();
+    }
+  },
+}
 </script>
 
 <style src="../style/sidebar.scss" scoped lang="scss"></style>
