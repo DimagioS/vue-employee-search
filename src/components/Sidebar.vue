@@ -7,6 +7,7 @@
     <p class="result-header">Результаты</p>
     <div class="result">
       <p v-if="users.length === 0">Начните поиск</p>
+      <Loader v-if="isLoading" />
       <div class="cards">
         <div class="card" v-for="user in users" :key="user?.id">
           <div class="img">
@@ -25,6 +26,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { debounce } from 'lodash';
+import Loader from './Loader.vue';
 
 export default {
   name: 'Sidebar',
@@ -47,6 +49,8 @@ export default {
       this.debouncedFetchUsers();
     }
   },
+
+  components: { Loader }
 }
 </script>
 
