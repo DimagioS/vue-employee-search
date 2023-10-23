@@ -6,8 +6,9 @@
 
     <p class="result-header">Результаты</p>
     <div class="result">
-      <p v-if="users.length === 0">Начните поиск</p>
+      <p v-if="users.length === 0 && error === null">Начните поиск</p>
       <Loader v-if="isLoading" />
+      <Error v-if="error" :error="error" />
       <div class="cards">
         <div class="card" v-for="user in users" :key="user?.id">
           <div class="img">
@@ -27,6 +28,7 @@
 import { mapActions, mapState } from 'vuex';
 import { debounce } from 'lodash';
 import Loader from './Loader.vue';
+import Error from './Error.vue';
 
 export default {
   name: 'Sidebar',
@@ -38,7 +40,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['searchQuery', 'users', 'isLoading', 'cachedUsers'])
+    ...mapState(['searchQuery', 'users', 'isLoading', 'error'])
   },
 
   methods: {
@@ -50,7 +52,7 @@ export default {
     }
   },
 
-  components: { Loader }
+  components: { Loader, Error }
 }
 </script>
 

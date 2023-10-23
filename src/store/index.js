@@ -13,6 +13,7 @@ export default createStore({
       cachedUsersById: new Map(),
       cachedUsersByUsername: new Map(),
       isLoading: false,
+      error: null,
     }
   },
 
@@ -45,6 +46,14 @@ export default createStore({
     SET_LOADING(state, loading) {
       state.isLoading = loading;
     },
+
+    SET_ERROR(state, error) {
+      state.error = error;
+    },
+
+    RESET_ERRORS(state) {
+      state.error = null;
+    },
   },
 
   actions: {
@@ -55,6 +64,7 @@ export default createStore({
     async fetchUsers({ commit, state }) {
       if (state.searchQuery === '') {
         commit('RESET_USERS');
+        commit('RESET_ERRORS');
         return;
       }
 
@@ -62,9 +72,10 @@ export default createStore({
 
       if (regex.test(state.searchQuery)) {
         commit('RESET_USERS');
+        commit('RESET_ERRORS');
         let queriesToFetch = [];
         const querysArray = [...new Set(state.searchQuery.split(',').map((user) => user.trim()))];
-
+        
         querysArray.forEach((query) => {
           let foundUser;
 
@@ -86,7 +97,7 @@ export default createStore({
         });
 
         commit('SET_LOADING', true);
-
+        
         try {
           const promises = queriesToFetch.map((user) => {
             const apiType = isNaN(user) 
@@ -108,17 +119,19 @@ export default createStore({
 
               commit('SET_CACHED_USERS', { user: user, id: user.id, username: user.username });
               commit('SET_USER', user);
+            } else {
+              commit('SET_ERROR', 'Внимание: Один или несколько запрашиваемых пользователей не найдены.');
             }
 
             queriesToFetch = [];
           })
         } catch (error) {
-          console.error('Произошла ошибка при получении данных:', error);
+          commit('SET_ERROR', 'Произошла ошибка при получении данных. Попробуйте изменить запрос.');
         } finally {
           commit('SET_LOADING', false);
         }
       } else {
-        console.log('Введенный формат неверен');
+        commit('SET_ERROR', 'Пожалуйста, используйте формат: "1, Bret, 2".')
       }
     },
   }
