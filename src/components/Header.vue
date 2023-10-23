@@ -1,12 +1,12 @@
 <template>
-  <div class="header">
+  <header class="header">
     <div class="logo-container">
       <h1 class="logo">{{ title }}</h1>
     </div>
     <div class="user-container">
       <p class="user">Пользователь</p>
     </div>
-  </div>
+  </header>
 </template>
 
 <script>

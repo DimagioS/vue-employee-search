@@ -10,9 +10,9 @@
       <Loader v-if="isLoading" />
       <Error v-if="error" :error="error" />
       <div class="cards">
-        <div class="card" v-for="user in users" :key="user?.id">
+        <div class="card" v-for="user in users" :key="user.id">
           <div class="img">
-            <img src="../assets/profile-photo.png" alt="">
+            <img src="../assets/profile-photo.png" alt="user">
           </div>
           <div class="card-info">
             <p class="name">{{ user?.username }}</p>
@@ -27,8 +27,8 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { debounce } from 'lodash';
-import Loader from './Loader.vue';
-import Error from './Error.vue';
+import Loader from './shared/Loader.vue';
+import Error from './shared/Error.vue';
 
 export default {
   name: 'Sidebar',

@@ -13,4 +13,4 @@
   }
 </script>
 
-<style src="../style/loader.scss" scoped lang="scss"></style>
+<style src="../../style/loader.scss" scoped lang="scss"></style>

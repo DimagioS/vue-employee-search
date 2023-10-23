@@ -16,4 +16,4 @@
   }
 </script>
 
-<style src="../style/error.scss" scoped lang="scss"></style>
+<style src="../../style/error.scss" scoped lang="scss"></style>
