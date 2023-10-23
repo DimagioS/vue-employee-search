@@ -10,7 +10,8 @@ export default createStore({
     return {
       searchQuery: '',
       users: [],
-      cachedUsersBuId: new Map(),
+      cachedUsersById: new Map(),
+      cachedUsersByUsername: new Map(),
       isLoading: false,
     }
   },
@@ -28,13 +29,17 @@ export default createStore({
       state.users = [];
     },
 
-    SET_CACHED_USERS_BY_ID(state, payload) {
-      state.cachedUsersBuId.set(payload.id, payload.user) 
+    SET_CACHED_USERS(state, payload) {
+      state.cachedUsersById.set(payload.id, payload.user);
+      state.cachedUsersByUsername.set(payload.username, payload.user);
     },
 
     REMOVE_OLDEST_CACHED_USER(state) {
-      const firstKey = state.cachedUsersBuId.keys().next().value;
-      state.cachedUsersBuId.delete(firstKey);
+      const firstIdKey = state.cachedUsersById.keys().next().value;
+      const firstUsernameKey = state.cachedUsersByUsername.keys().next().value;
+
+      state.cachedUsersById.delete(firstIdKey);
+      state.cachedUsersByUsername.delete(firstUsernameKey);
     },
 
     SET_LOADING(state, loading) {
@@ -61,12 +66,23 @@ export default createStore({
         const querysArray = [...new Set(state.searchQuery.split(',').map((user) => user.trim()))];
 
         querysArray.forEach((query) => {
-          if (state.cachedUsersBuId.has(parseInt(query))) {
-            commit('SET_USER', state.cachedUsersBuId.get(parseInt(query)));
-            return; 
+          let foundUser;
+
+          if (!isNaN(query)) {
+            if (state.cachedUsersById.has(parseInt(query))) {
+              foundUser = state.cachedUsersById.get(parseInt(query));
+            }
           } else {
-            queriesToFetch.push(query);
+            if (state.cachedUsersByUsername.has(query)) {
+              foundUser = state.cachedUsersByUsername.get(query);
+            }
           }
+
+          let existingUser = state.users?.find(user => user?.id === foundUser?.id);
+
+          if (existingUser) return
+
+          foundUser ? commit('SET_USER', foundUser) : queriesToFetch.push(query);
         });
 
         commit('SET_LOADING', true);
@@ -86,11 +102,11 @@ export default createStore({
             const user = response.data?.[0];
 
             if (user !== undefined) {
-              if (state.cachedUsersBuId.size >= MAX_CACHE_SIZE) {
+              if (state.cachedUsersById.size >= MAX_CACHE_SIZE) {
                 commit('REMOVE_OLDEST_CACHED_USER');
               }
 
-              commit('SET_CACHED_USERS_BY_ID', { user: user, id: user.id });
+              commit('SET_CACHED_USERS', { user: user, id: user.id, username: user.username });
               commit('SET_USER', user);
             }
 
