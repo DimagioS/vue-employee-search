@@ -1,4 +1,5 @@
-import { API_URL_ID, API_URL_USERNAME, MAX_CACHE_SIZE } from "./config";
+import axios from "axios";
+import { API_URL_ID, API_URL_USERNAME, ERROR_CODES, MAX_CACHE_SIZE } from "./config";
 
 export function isValidQuery(query) {
   const regex = /^\s*([a-zA-Z0-9]+)(\s*,\s*[a-zA-Z0-9]+)*\s*$/;
@@ -30,4 +31,26 @@ export function manageUserCache(commit, state, user) {
   }
 
   commit('SET_CACHED_USERS', { user: user, id: user.id, username: user.username });
+}
+
+export async function fetchUsersByQueries(queriesToFetch, commit, state) {
+  const promises = queriesToFetch.map(user => {
+    const apiType = formApiRequest(user);
+    return axios.get(apiType);
+  });
+  
+  const responses = await Promise.all(promises);
+  
+  responses.forEach(response => {
+    const user = response.data?.[0];
+    
+    if (user !== undefined) {
+      manageUserCache(commit, state, user);
+      commit('SET_USER', user);
+    } else {
+      commit('SET_ERROR', ERROR_CODES.USER_NOT_FOUND.message);
+    }
+  });
+  
+  queriesToFetch = [];
 }

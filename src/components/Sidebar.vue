@@ -10,15 +10,12 @@
       <Loader v-if="isLoading" />
       <Error v-if="error" :error="error" />
       <div class="cards">
-        <div class="card" v-for="user in users" :key="user.id">
-          <div class="img">
-            <img src="../assets/profile-photo.png" alt="user">
-          </div>
-          <div class="card-info">
-            <p class="name">{{ user?.username }}</p>
-            <p class="email">{{ user?.email }}</p>
-          </div>
-        </div>
+        <Card 
+          v-for="user in users" 
+          :key="user.id" 
+          :user="user"
+          @click="() => getUserId(user.id)"
+        />
       </div>
     </div>
   </div>
@@ -29,6 +26,7 @@ import { mapActions, mapState } from 'vuex';
 import { debounce } from 'lodash';
 import Loader from './shared/Loader.vue';
 import Error from './shared/Error.vue';
+import Card from './Card.vue';
 
 export default {
   name: 'Sidebar',
@@ -36,6 +34,7 @@ export default {
   data() {
     return {
       debouncedFetchUsers: debounce(this.fetchUsers, 500),
+      debouncedResetActiveUser: debounce(this.resetActiveUser, 500),
     }
   },
 
@@ -44,15 +43,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setSearchQuery', 'fetchUsers']),
+    ...mapActions(['setSearchQuery', 'setActiveUser', 'fetchUsers', 'resetActiveUser']),
     updateSearchQuery(event) {
       this.setSearchQuery(event.target.value);
 
       this.debouncedFetchUsers();
+      this.debouncedResetActiveUser();
+    },
+    getUserId(id) {
+      this.setActiveUser(id)
     }
   },
 
-  components: { Loader, Error }
+  components: { Loader, Error, Card }
 }
 </script>
 

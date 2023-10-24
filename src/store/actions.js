@@ -1,10 +1,18 @@
-import axios from "axios";
-import { formApiRequest, getUserFromCache, isValidQuery, manageUserCache, userExists } from "./utils";
+import { fetchUsersByQueries, getUserFromCache, isValidQuery, userExists } from "./utils";
 import { ERROR_CODES } from "./config";
 
 const actions = {
   setSearchQuery({ commit }, query) {
     commit('SET_SEARCH_QUERY', query);
+  },
+
+  setActiveUser({ commit, state }, userId) {
+    const user = state.users.find((user) => user.id === userId);
+    commit('SET_ACTIVE_USER', user);
+  },
+
+  resetActiveUser({ commit, state }) {
+    commit('REMOVE_ACTIVE_USER', state);
   },
 
   async fetchUsers({ commit, state }) {
@@ -24,28 +32,9 @@ const actions = {
       });
 
       commit('SET_LOADING', true);
-      
+
       try {
-        const promises = queriesToFetch.map((user) => {
-          const apiType = formApiRequest(user);
-
-          return axios.get(apiType);
-        });
-
-        const responses = await Promise.all(promises);
-
-        responses.forEach((response) => {
-          const user = response.data?.[0];
-
-          if (user !== undefined) {
-            manageUserCache(commit, state, user);
-            commit('SET_USER', user);
-          } else {
-            commit('SET_ERROR', ERROR_CODES.USER_NOT_FOUND.message);
-          }
-
-          queriesToFetch = [];
-        })
+        await fetchUsersByQueries(queriesToFetch, commit, state);
       } catch (error) {
         commit('SET_ERROR', ERROR_CODES.DATA_FETCH_ERROR.message);
       } finally {

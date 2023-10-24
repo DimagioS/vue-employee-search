@@ -7,6 +7,18 @@ const mutations = {
     state.users.push(users);
   },
 
+  SET_ACTIVE_USER(state, user) {
+    state.activeUser = user;
+  },
+
+  REMOVE_ACTIVE_USER(state) {
+    const isActiveUserInList = state.users.find((user) => user?.id === state.activeUser?.id);
+    
+    if (!isActiveUserInList) {
+      state.activeUser = null;
+    }
+  },
+
   SET_CACHED_USERS(state, payload) {
     state.cachedUsersById.set(payload.id, payload.user);
     state.cachedUsersByUsername.set(payload.username, payload.user);

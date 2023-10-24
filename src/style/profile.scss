@@ -1,7 +1,18 @@
 .profile {
-  display: flex;
   flex-grow: 1;
   padding: 30px;
+}
+
+.profile-instruction {
+  color: $clr-primary-1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.profile-main {
+  display: flex;
 }
 
 .profile-img {
@@ -16,8 +27,8 @@
 }
 
 .profile-contact {
+  color: $clr-primary-2;
   font-size: 14px;
-  color: #333;
   margin-bottom: 20px;
 
   p {
@@ -29,21 +40,21 @@
   }
 
   span {
+    color: $clr-primary-1;
     font-weight: 400;
-    color: #76787D;
   }
 }
 
 .profile-about-me {
   span {
-    color: #333;
+    color: $clr-primary-2;
     font-size: 16px;
     font-weight: 600;
   }
   
   p {
+    color: $clr-primary-1;
     margin-top: 25px;
-    color: #76787D;
     font-size: 14px;
   }
 }

@@ -1,0 +1,48 @@
+.card {
+  cursor: pointer;
+  display: flex;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.10);
+  min-width: 270px;
+
+  .img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px 0 0 10px;
+    background: #fff;
+  }
+
+  img {
+    width: 70px;
+  }
+}
+
+.card:not(:last-child) {
+  margin-bottom: 18px;
+}
+
+.card.active {
+  background: #E0E0E0;
+}
+
+.card-info {
+  padding: 15px;
+  border-left: 1px solid #E9ECEF;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  p {
+    color: $clr-primary-1;
+    font-size: 14px;
+  }
+
+  .name {
+    color: #333;
+    font-weight: 600;
+  }
+}
