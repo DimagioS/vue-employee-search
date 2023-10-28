@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { computed, toRef } from 'vue';
+import { useStore } from 'vuex'
   export default {
     name: 'Card',
     props: {
@@ -20,12 +21,15 @@ import { mapState } from 'vuex'
         required: true,
       }
     },
-    computed: {
-    ...mapState(['activeUser']),
-    computedClass() {
-      return this.activeUser?.id === this.user?.id ? 'active' : '';
-    }
-  },
+    setup(props) {
+      const store = useStore();
+      const user = toRef(props, 'user');
+      const activeUser = computed(() => store.state.activeUser);
+
+      const computedClass = computed(() => activeUser.value?.id === user.value?.id ? 'active' : '');
+
+      return { computedClass }
+    },
   }
 </script>
 
