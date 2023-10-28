@@ -23,13 +23,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { computed } from 'vue';
+import { useStore } from 'vuex'
 
   export default {
     name: 'Profile',
-    computed: {
-    ...mapState(['activeUser'])
-  },
+    setup() {
+      const store = useStore();
+      const activeUser = computed(() => store.state.activeUser);
+
+      return { activeUser }
+    },
   }
 </script>
 
