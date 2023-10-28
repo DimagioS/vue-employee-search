@@ -2,19 +2,6 @@ import { fetchUsersByQueries, getUserFromCache, isValidQuery, userExists } from 
 import { ERROR_CODES } from "./config";
 
 const actions = {
-  setSearchQuery({ commit }, query) {
-    commit('SET_SEARCH_QUERY', query);
-  },
-
-  setActiveUser({ commit, state }, userId) {
-    const user = state.users.find((user) => user.id === userId);
-    commit('SET_ACTIVE_USER', user);
-  },
-
-  resetActiveUser({ commit, state }) {
-    commit('REMOVE_ACTIVE_USER', state);
-  },
-
   async fetchUsers({ commit, state }) {
     commit('RESET_STATE');
     if (state.searchQuery === '') return;

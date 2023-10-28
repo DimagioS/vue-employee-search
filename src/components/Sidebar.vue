@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import { debounce } from 'lodash';
 import Loader from './shared/Loader.vue';
 import Error from './shared/Error.vue';
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       debouncedFetchUsers: debounce(this.fetchUsers, 500),
-      debouncedResetActiveUser: debounce(this.resetActiveUser, 500),
+      debouncedResetActiveUser: debounce(this.REMOVE_ACTIVE_USER, 500),
     }
   },
 
@@ -43,15 +43,16 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setSearchQuery', 'setActiveUser', 'fetchUsers', 'resetActiveUser']),
+    ...mapMutations(['SET_SEARCH_QUERY', 'REMOVE_ACTIVE_USER', 'SET_ACTIVE_USER']),
+    ...mapActions(['fetchUsers']),
     updateSearchQuery(event) {
-      this.setSearchQuery(event.target.value);
+      this.SET_SEARCH_QUERY(event.target.value);
 
       this.debouncedFetchUsers();
       this.debouncedResetActiveUser();
     },
     getUserId(id) {
-      this.setActiveUser(id)
+      this.SET_ACTIVE_USER(id)
     }
   },
 

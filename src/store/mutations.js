@@ -7,8 +7,8 @@ const mutations = {
     state.users.push(users);
   },
 
-  SET_ACTIVE_USER(state, user) {
-    state.activeUser = user;
+  SET_ACTIVE_USER(state, userId) {
+    state.activeUser = state.users.find((user) => user.id === userId);
   },
 
   REMOVE_ACTIVE_USER(state) {
