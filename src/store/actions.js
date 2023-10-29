@@ -6,7 +6,7 @@ const actions = {
     commit('RESET_STATE');
     if (state.searchQuery === '') return;
 
-    if (isValidQuery(state.searchQuery)) {
+    if (isValidQuery(state.searchQuery) && state.searchQuery !== undefined) {
       let queriesToFetch = [];
       const querysArray = [...new Set(state.searchQuery.split(',').map((user) => user.trim()))];
 
